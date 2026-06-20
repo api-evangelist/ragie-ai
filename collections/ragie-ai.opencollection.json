@@ -1,0 +1,541 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ragie API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/documents",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Ingest a document by uploading a file."
+        },
+        {
+          "info": {
+            "name": "Create Document Raw",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/documents/raw",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"data\": \"<string>\",\n  \"name\": \"<string>\",\n  \"partition\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Ingest a document from raw inline text."
+        },
+        {
+          "info": {
+            "name": "Create Document From URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/documents/from-url",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"url\": \"<string>\",\n  \"mode\": \"fast\",\n  \"partition\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Ingest a document by fetching it from a remote URL."
+        },
+        {
+          "info": {
+            "name": "List Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents"
+          },
+          "docs": "List documents with pagination and metadata filtering."
+        },
+        {
+          "info": {
+            "name": "Get Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/{{document_id}}"
+          },
+          "docs": "Retrieve a single document by id."
+        },
+        {
+          "info": {
+            "name": "Update Document File",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/documents/{{document_id}}",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Replace a document's contents with a new uploaded file."
+        },
+        {
+          "info": {
+            "name": "Patch Document Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ragie.ai/documents/{{document_id}}/metadata",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"metadata\": {}\n}"
+            }
+          },
+          "docs": "Update a document's custom metadata."
+        },
+        {
+          "info": {
+            "name": "Delete Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/documents/{{document_id}}"
+          },
+          "docs": "Delete a document."
+        },
+        {
+          "info": {
+            "name": "Get Document Content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/{{document_id}}/content"
+          },
+          "docs": "Return the processed text content of a document."
+        },
+        {
+          "info": {
+            "name": "Get Document Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/{{document_id}}/summary"
+          },
+          "docs": "Return the generated summary of a document."
+        },
+        {
+          "info": {
+            "name": "Get Document Source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/{{document_id}}/source"
+          },
+          "docs": "Return the original source file for a document."
+        },
+        {
+          "info": {
+            "name": "Get Document Chunks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/{{document_id}}/chunks"
+          },
+          "docs": "List the chunks of a document."
+        },
+        {
+          "info": {
+            "name": "Get Document Chunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/{{document_id}}/chunks/{{chunk_id}}"
+          },
+          "docs": "Retrieve a single chunk of a document."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Retrievals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/retrievals",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"query\": \"<string>\",\n  \"top_k\": 8,\n  \"rerank\": false,\n  \"partition\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Run a semantic retrieval over indexed chunks and return scored chunks."
+        },
+        {
+          "info": {
+            "name": "Create Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/responses",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"input\": \"<string>\",\n  \"partition\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Generate an agentic response grounded in retrieved content."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Connections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/connections",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"source_type\": \"<string>\",\n  \"partition\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Create a managed data connector to an external source."
+        },
+        {
+          "info": {
+            "name": "Create OAuth Redirect URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/connections/oauth",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"source_type\": \"<string>\",\n  \"redirect_uri\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Create an OAuth redirect URL to begin a connection authorization flow."
+        },
+        {
+          "info": {
+            "name": "List Connection Source Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections/source_type"
+          },
+          "docs": "List supported connector source types."
+        },
+        {
+          "info": {
+            "name": "List Connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections"
+          },
+          "docs": "List managed connections."
+        },
+        {
+          "info": {
+            "name": "Get Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections/{{connection_id}}"
+          },
+          "docs": "Retrieve a single connection."
+        },
+        {
+          "info": {
+            "name": "Get Connection Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections/{{connection_id}}/stats"
+          },
+          "docs": "Retrieve statistics for a connection."
+        },
+        {
+          "info": {
+            "name": "Sync Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/connections/{{connection_id}}/sync"
+          },
+          "docs": "Trigger an on-demand sync of a connection."
+        },
+        {
+          "info": {
+            "name": "Set Connection Enabled",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/connections/{{connection_id}}/enabled",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"enabled\": true\n}"
+            }
+          },
+          "docs": "Enable or disable a connection."
+        },
+        {
+          "info": {
+            "name": "Set Connection Limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/connections/{{connection_id}}/limit",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"pages_processed_limit_monthly\": 10000\n}"
+            }
+          },
+          "docs": "Set the page-processing limit for a connection."
+        },
+        {
+          "info": {
+            "name": "Update Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/connections/{{connection_id}}",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"metadata\": {}\n}"
+            }
+          },
+          "docs": "Update a connection's configuration."
+        },
+        {
+          "info": {
+            "name": "Delete Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/connections/{{connection_id}}"
+          },
+          "docs": "Delete a connection."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Entities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/instructions",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {}\n}"
+            }
+          },
+          "docs": "Create an extraction instruction defining entities to extract."
+        },
+        {
+          "info": {
+            "name": "List Instructions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/instructions"
+          },
+          "docs": "List extraction instructions."
+        },
+        {
+          "info": {
+            "name": "Update Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/instructions/{{instruction_id}}",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {}\n}"
+            }
+          },
+          "docs": "Update an extraction instruction."
+        },
+        {
+          "info": {
+            "name": "Delete Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/instructions/{{instruction_id}}"
+          },
+          "docs": "Delete an extraction instruction."
+        },
+        {
+          "info": {
+            "name": "Get Instruction Extracted Entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/instructions/{{instruction_id}}/entities"
+          },
+          "docs": "Get entities extracted for an instruction."
+        },
+        {
+          "info": {
+            "name": "Get Document Extracted Entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/{{document_id}}/entities"
+          },
+          "docs": "Get entities extracted for a document."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Partitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/partitions",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"name\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Create a partition for multi-tenant data isolation."
+        },
+        {
+          "info": {
+            "name": "List Partitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/partitions"
+          },
+          "docs": "List partitions."
+        },
+        {
+          "info": {
+            "name": "Get Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/partitions/{{partition_id}}"
+          },
+          "docs": "Retrieve a single partition."
+        },
+        {
+          "info": {
+            "name": "Update Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ragie.ai/partitions/{{partition_id}}",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a partition."
+        },
+        {
+          "info": {
+            "name": "Set Partition Limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/partitions/{{partition_id}}/limits",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"pages_processed_limit_monthly\": 60000,\n  \"pages_hosted_limit_monthly\": 60000\n}"
+            }
+          },
+          "docs": "Set processed and hosted page limits for a partition."
+        },
+        {
+          "info": {
+            "name": "Delete Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/partitions/{{partition_id}}"
+          },
+          "docs": "Delete a partition."
+        }
+      ]
+    }
+  ]
+}

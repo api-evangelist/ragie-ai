@@ -1,0 +1,1281 @@
+openapi: 3.0.1
+info:
+  title: Ragie API
+  description: >-
+    Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service
+    platform. This specification covers the documented REST surface for
+    ingesting documents, retrieving chunks, generating grounded responses,
+    managing data connectors, extracting entities, and isolating data with
+    partitions. All requests are authenticated with a Bearer API key.
+  termsOfService: https://www.ragie.ai/terms-of-service
+  contact:
+    name: Ragie Support
+    url: https://www.ragie.ai
+    email: support@ragie.ai
+  version: '1.0'
+servers:
+  - url: https://api.ragie.ai
+security:
+  - bearerAuth: []
+tags:
+  - name: Documents
+  - name: Retrievals
+  - name: Connections
+  - name: Entities
+  - name: Partitions
+paths:
+  /documents:
+    post:
+      operationId: createDocument
+      tags:
+        - Documents
+      summary: Create Document
+      description: >-
+        Ingest a document by uploading a file. The document is processed
+        asynchronously through Ragie's pipeline (partitioning, chunking,
+        indexing) until it reaches the ready state.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The binary file to ingest.
+                mode:
+                  type: string
+                  enum: [fast, hi_res]
+                  description: Partition strategy controlling extraction fidelity.
+                metadata:
+                  type: object
+                  additionalProperties: true
+                  description: Custom key-value metadata for filtering.
+                name:
+                  type: string
+                external_id:
+                  type: string
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: Document created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    get:
+      operationId: listDocuments
+      tags:
+        - Documents
+      summary: List Documents
+      parameters:
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            default: 25
+        - name: partition
+          in: query
+          schema:
+            type: string
+        - name: filter
+          in: query
+          schema:
+            type: string
+          description: JSON metadata filter.
+      responses:
+        '200':
+          description: A page of documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/raw:
+    post:
+      operationId: createDocumentRaw
+      tags:
+        - Documents
+      summary: Create Document Raw
+      description: Ingest a document from raw inline text rather than a file.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: string
+                  description: Raw text content to ingest.
+                metadata:
+                  type: object
+                  additionalProperties: true
+                name:
+                  type: string
+                external_id:
+                  type: string
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: Document created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /documents/from-url:
+    post:
+      operationId: createDocumentFromUrl
+      tags:
+        - Documents
+      summary: Create Document From URL
+      description: Ingest a document by fetching it from a remote URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                  format: uri
+                mode:
+                  type: string
+                  enum: [fast, hi_res]
+                metadata:
+                  type: object
+                  additionalProperties: true
+                name:
+                  type: string
+                external_id:
+                  type: string
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: Document created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /documents/{document_id}:
+    get:
+      operationId: getDocument
+      tags:
+        - Documents
+      summary: Get Document
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: The document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateDocumentFile
+      tags:
+        - Documents
+      summary: Update Document File
+      description: Replace a document's contents with a new uploaded file.
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Document updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteDocument
+      tags:
+        - Documents
+      summary: Delete Document
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Document deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /documents/{document_id}/metadata:
+    patch:
+      operationId: patchDocumentMetadata
+      tags:
+        - Documents
+      summary: Patch Document Metadata
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - metadata
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Metadata updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/content:
+    get:
+      operationId: getDocumentContent
+      tags:
+        - Documents
+      summary: Get Document Content
+      description: Returns the processed text content of the document.
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Document content.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/summary:
+    get:
+      operationId: getDocumentSummary
+      tags:
+        - Documents
+      summary: Get Document Summary
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Document summary.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/source:
+    get:
+      operationId: getDocumentSource
+      tags:
+        - Documents
+      summary: Get Document Source
+      description: Returns the original source file for the document.
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: The source file.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/chunks:
+    get:
+      operationId: getDocumentChunks
+      tags:
+        - Documents
+      summary: Get Document Chunks
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of chunks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chunks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Chunk'
+                  cursor:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/chunks/{chunk_id}:
+    get:
+      operationId: getDocumentChunk
+      tags:
+        - Documents
+      summary: Get Document Chunk
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+        - name: chunk_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The chunk.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chunk'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /retrievals:
+    post:
+      operationId: retrieve
+      tags:
+        - Retrievals
+      summary: Retrieve
+      description: >-
+        Run a semantic retrieval over indexed chunks and return the most
+        relevant scored chunks for the query.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrievalRequest'
+      responses:
+        '200':
+          description: Scored chunks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /responses:
+    post:
+      operationId: createResponse
+      tags:
+        - Retrievals
+      summary: Create Response
+      description: >-
+        Generate an agentic response grounded in content retrieved from the
+        knowledge base.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - input
+              properties:
+                input:
+                  type: string
+                  description: The user input or question.
+                partition:
+                  type: string
+                instructions:
+                  type: string
+                filter:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The generated response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  output:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /connections:
+    post:
+      operationId: createConnection
+      tags:
+        - Connections
+      summary: Create Connection
+      description: Create a managed data connector to an external source.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectionCreate'
+      responses:
+        '200':
+          description: Connection created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      operationId: listConnections
+      tags:
+        - Connections
+      summary: List Connections
+      parameters:
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of connections.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  connections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Connection'
+                  cursor:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/oauth:
+    post:
+      operationId: createOAuthRedirectUrl
+      tags:
+        - Connections
+      summary: Create OAuth Redirect URL
+      description: Create an OAuth redirect URL to begin a connection authorization flow.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - source_type
+              properties:
+                source_type:
+                  type: string
+                  description: The connector source type, e.g. google_drive, notion.
+                redirect_uri:
+                  type: string
+                  format: uri
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: OAuth redirect URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/source_type:
+    get:
+      operationId: listConnectionSourceTypes
+      tags:
+        - Connections
+      summary: List Connection Source Types
+      responses:
+        '200':
+          description: Supported connector source types.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  source_types:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}:
+    get:
+      operationId: getConnection
+      tags:
+        - Connections
+      summary: Get Connection
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: The connection.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateConnection
+      tags:
+        - Connections
+      summary: Update Connection
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+                mode:
+                  type: string
+      responses:
+        '200':
+          description: Connection updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteConnection
+      tags:
+        - Connections
+      summary: Delete Connection
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: Connection deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/stats:
+    get:
+      operationId: getConnectionStats
+      tags:
+        - Connections
+      summary: Get Connection Stats
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: Connection statistics.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/sync:
+    post:
+      operationId: syncConnection
+      tags:
+        - Connections
+      summary: Sync Connection
+      description: Trigger an on-demand sync of the connection.
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: Sync triggered.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/enabled:
+    put:
+      operationId: setConnectionEnabled
+      tags:
+        - Connections
+      summary: Set Connection Enabled
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - enabled
+              properties:
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Connection enabled state updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/limit:
+    put:
+      operationId: setConnectionLimits
+      tags:
+        - Connections
+      summary: Set Connection Limits
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pages_processed_limit_monthly:
+                  type: integer
+      responses:
+        '200':
+          description: Connection limits updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /instructions:
+    post:
+      operationId: createInstruction
+      tags:
+        - Entities
+      summary: Create Instruction
+      description: >-
+        Create an extraction instruction that defines a JSON schema of entities
+        Ragie should extract from matching documents.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructionCreate'
+      responses:
+        '200':
+          description: Instruction created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instruction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      operationId: listInstructions
+      tags:
+        - Entities
+      summary: List Instructions
+      responses:
+        '200':
+          description: A page of instructions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  instructions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instruction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /instructions/{instruction_id}:
+    put:
+      operationId: updateInstruction
+      tags:
+        - Entities
+      summary: Update Instruction
+      parameters:
+        - $ref: '#/components/parameters/InstructionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructionCreate'
+      responses:
+        '200':
+          description: Instruction updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instruction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteInstruction
+      tags:
+        - Entities
+      summary: Delete Instruction
+      parameters:
+        - $ref: '#/components/parameters/InstructionId'
+      responses:
+        '200':
+          description: Instruction deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /instructions/{instruction_id}/entities:
+    get:
+      operationId: getInstructionExtractedEntities
+      tags:
+        - Entities
+      summary: Get Instruction Extracted Entities
+      parameters:
+        - $ref: '#/components/parameters/InstructionId'
+      responses:
+        '200':
+          description: Extracted entities for the instruction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Entity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/entities:
+    get:
+      operationId: getDocumentExtractedEntities
+      tags:
+        - Entities
+      summary: Get Document Extracted Entities
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Extracted entities for the document.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Entity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /partitions:
+    post:
+      operationId: createPartition
+      tags:
+        - Partitions
+      summary: Create Partition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartitionCreate'
+      responses:
+        '200':
+          description: Partition created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      operationId: listPartitions
+      tags:
+        - Partitions
+      summary: List Partitions
+      parameters:
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of partitions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  partitions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Partition'
+                  cursor:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /partitions/{partition_id}:
+    get:
+      operationId: getPartition
+      tags:
+        - Partitions
+      summary: Get Partition
+      parameters:
+        - $ref: '#/components/parameters/PartitionId'
+      responses:
+        '200':
+          description: The partition.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updatePartition
+      tags:
+        - Partitions
+      summary: Update Partition
+      parameters:
+        - $ref: '#/components/parameters/PartitionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Partition updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deletePartition
+      tags:
+        - Partitions
+      summary: Delete Partition
+      parameters:
+        - $ref: '#/components/parameters/PartitionId'
+      responses:
+        '200':
+          description: Partition deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /partitions/{partition_id}/limits:
+    put:
+      operationId: setPartitionLimits
+      tags:
+        - Partitions
+      summary: Set Partition Limits
+      parameters:
+        - $ref: '#/components/parameters/PartitionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pages_processed_limit_monthly:
+                  type: integer
+                pages_hosted_limit_monthly:
+                  type: integer
+      responses:
+        '200':
+          description: Partition limits updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Ragie API key passed as a Bearer token in the Authorization header.
+  parameters:
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ConnectionId:
+      name: connection_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    InstructionId:
+      name: instruction_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    PartitionId:
+      name: partition_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PaymentRequired:
+      description: Plan limit reached or payment required.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Too many requests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Document:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - pending
+            - partitioning
+            - partitioned
+            - refined
+            - chunked
+            - indexed
+            - summary_indexed
+            - ready
+            - failed
+        name:
+          type: string
+        external_id:
+          type: string
+        partition:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        chunk_count:
+          type: integer
+        page_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    DocumentList:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        cursor:
+          type: string
+    Chunk:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        document_id:
+          type: string
+          format: uuid
+        text:
+          type: string
+        index:
+          type: integer
+        metadata:
+          type: object
+          additionalProperties: true
+    RetrievalRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: The query to search with when retrieving document chunks.
+        top_k:
+          type: integer
+          default: 8
+          description: Maximum number of chunks to return.
+        filter:
+          type: object
+          additionalProperties: true
+          description: >-
+            Metadata filter supporting operators $eq, $ne, $gt, $gte, $lt,
+            $lte, $in, $nin.
+        rerank:
+          type: boolean
+          default: false
+        max_chunks_per_document:
+          type: integer
+        recency_bias:
+          type: boolean
+          default: false
+        partition:
+          type: string
+    RetrievalResponse:
+      type: object
+      properties:
+        scored_chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoredChunk'
+    ScoredChunk:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        text:
+          type: string
+        score:
+          type: number
+          format: float
+        document_id:
+          type: string
+          format: uuid
+        document_name:
+          type: string
+        document_metadata:
+          type: object
+          additionalProperties: true
+    ConnectionCreate:
+      type: object
+      required:
+        - source_type
+      properties:
+        source_type:
+          type: string
+        name:
+          type: string
+        partition:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+    Connection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        source_type:
+          type: string
+        name:
+          type: string
+        enabled:
+          type: boolean
+        partition:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    InstructionCreate:
+      type: object
+      required:
+        - name
+        - prompt
+        - entity_schema
+      properties:
+        name:
+          type: string
+        prompt:
+          type: string
+          description: Natural-language extraction instruction.
+        entity_schema:
+          type: object
+          description: JSON schema describing the entities to extract.
+          additionalProperties: true
+        scope:
+          type: string
+          enum:
+            - document
+            - chunk
+        filter:
+          type: object
+          additionalProperties: true
+        active:
+          type: boolean
+    Instruction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        prompt:
+          type: string
+        entity_schema:
+          type: object
+          additionalProperties: true
+        scope:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    Entity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        document_id:
+          type: string
+          format: uuid
+        instruction_id:
+          type: string
+          format: uuid
+        data:
+          type: object
+          additionalProperties: true
+    PartitionCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Lowercase alphanumeric identifier with underscores or hyphens.
+        pages_processed_limit_monthly:
+          type: integer
+        pages_hosted_limit_monthly:
+          type: integer
+    Partition:
+      type: object
+      properties:
+        name:
+          type: string
+        pages_processed_limit_monthly:
+          type: integer
+        pages_hosted_limit_monthly:
+          type: integer
+        document_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer

@@ -1,0 +1,70 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Ragie
+providerId: ragie-ai
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- AI
+- RAG
+- Retrieval
+- Vector Search
+- Document Ingestion
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Ragie enforces per-account quotas and request rate limits across the REST
+  API. Plan-level page-processing and retrieval allotments act as monthly usage
+  quotas, while connection and partition page limits cap ingestion per source
+  or tenant. Requests that exceed the request rate limit return HTTP 429, and
+  requests blocked by a plan or credit limit return HTTP 402. Specific
+  per-endpoint request-rate values are not reconciled in this artifact.
+notes: >-
+  Verify per-endpoint request rate limits and per-plan page/retrieval quotas in
+  the Ragie documentation and dashboard during reconciliation; quotas scale
+  with plan tier and Enterprise agreements.
+sources:
+- https://docs.ragie.ai
+- https://www.ragie.ai/pricing
+responseCodes:
+  throttled: 429
+  paymentRequired: 402
+limits:
+- name: Page Processing Quota
+  scope: account
+  metric: pages
+  limit: see plan (1,000 Free / 10,000 Starter / 60,000 Pro / unlimited Enterprise)
+  notes: Monthly included processed pages; overages billed per page.
+- name: Retrievals Quota
+  scope: account
+  metric: requests
+  limit: 1,000 on Free; unlimited on paid plans
+  notes: Monthly retrieval allotment per plan.
+- name: Request Rate Limit
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Per-endpoint request rate; exceeding returns HTTP 429.
+- name: Connection Page Limit
+  scope: connection
+  metric: pages
+  limit: configurable per connection
+  notes: Set via PUT /connections/{connection_id}/limit; connection stops processing at limit.
+- name: Partition Page Limit
+  scope: partition
+  metric: pages
+  limit: configurable per partition
+  notes: Set via PUT /partitions/{partition_id}/limits for processed and hosted pages.
+policies:
+- name: Tiered Quotas
+  description: Page-processing and retrieval allotments raise with plan tier and Enterprise agreements.
+- name: Credit-Based Overages
+  description: Overages draw from prepaid credits with a configurable monthly spending cap; HTTP 402 when blocked.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,111 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Ragie
+providerId: ragie-ai
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- AI
+- RAG
+- Retrieval
+- Vector Search
+- Document Ingestion
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Ragie spend. Ragie bills a monthly subscription per plan that
+  includes a fixed allotment of processed pages and retrievals, then meters
+  overages: per-page processing (Fast vs Hi-res), per-page-per-month storage
+  and search, and per-minute audio/video processing. Overages draw from prepaid
+  credits with a configurable monthly spending cap.
+notes: >-
+  Per-page and per-minute rates are subject to change; verify against the Ragie
+  pricing page during reconciliation.
+sources:
+- https://www.ragie.ai/pricing
+- https://docs.ragie.ai
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Ragie
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Subscription-Plus-Usage
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Ragie
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Ragie
+  PublisherName: Ragie
+  InvoiceIssuerName: Ragie
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Subscription-Plus-Usage
+meters:
+- name: subscription
+  description: Monthly plan fee (Starter $100, Pro $500) including a page/retrieval allotment.
+  unit: month
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: pages_processed
+  description: Pages processed during document ingestion, billed per page beyond the plan allotment (Fast vs Hi-res).
+  unit: pages
+  aggregation: sum
+  dimensions:
+  - account
+  - partition
+  - mode
+- name: pages_stored
+  description: Pages stored and searchable, billed per page per month.
+  unit: pages
+  aggregation: sum
+  dimensions:
+  - account
+  - partition
+- name: retrievals
+  description: Retrieval requests; metered against the plan allotment (unlimited on paid plans).
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - partition
+- name: audio_minutes
+  description: Audio minutes processed, billed per minute.
+  unit: minutes
+  aggregation: sum
+  dimensions:
+  - account
+  - partition
+- name: video_minutes
+  description: Video minutes processed, billed per minute.
+  unit: minutes
+  aggregation: sum
+  dimensions:
+  - account
+  - partition
+principles:
+- name: Visibility
+  description: Pull Ragie usage from the dashboard; inspect page processing, storage, and retrieval burn per partition.
+- name: Allocation
+  description: Tag workloads with partitions; map per-partition page and storage usage to internal cost centers.
+- name: Optimization
+  description: Use Fast mode over Hi-res when extraction fidelity allows; set connection and partition page limits; prune stale documents to cut storage.
+- name: Accountability
+  description: Set a monthly credit spending cap; assign partition owners; review page and storage spend monthly against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

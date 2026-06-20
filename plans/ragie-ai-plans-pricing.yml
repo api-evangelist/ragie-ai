@@ -1,0 +1,305 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Ragie
+providerId: ragie-ai
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- AI
+- RAG
+- Retrieval
+- Vector Search
+- Document Ingestion
+- Plans
+description: >-
+  Ragie offers tiered subscription plans (Developer/Free, Starter, Pro, and
+  Enterprise) that bundle a monthly allotment of processed pages and retrievals,
+  then meter usage on top. Page processing overages are billed per page (Fast
+  vs Hi-res), storage and search are billed per page per month, and audio/video
+  processing is billed per minute. Overages draw down automatically from
+  prepaid credits with a configurable monthly spending cap.
+notes: >-
+  Pricing reflects the published Ragie pricing page; verify current included
+  allotments, per-page rates, and audio/video rates on the page during
+  reconciliation.
+sources:
+- https://www.ragie.ai/pricing
+- https://docs.ragie.ai
+plans:
+- id: ragie-developer
+  name: Developer (Free)
+  type: free
+  description: >-
+    Free tier with 1,000 included processed pages and up to 1,000 retrievals
+    for evaluation and small projects.
+  entries:
+  - label: Included Page Processing
+    name: pages_included
+    type: included
+    metric: pages
+    limit: 1000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: Retrievals
+    name: retrievals
+    type: included
+    metric: requests
+    limit: 1000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: Additional Pages (Fast)
+    name: pages_fast
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.02 per page
+    userMultiplied: false
+  - label: Additional Pages (Hi-res)
+    name: pages_hi_res
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.05 per page
+    userMultiplied: false
+  - label: Storage and Search
+    name: storage_search
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.002 per page / month
+    userMultiplied: false
+  elements:
+  - name: Documents
+  - name: Retrievals
+  - name: Connections
+  - name: Entity Extraction
+  - name: Partitions
+- id: ragie-starter
+  name: Starter
+  type: subscription
+  description: >-
+    $100/month plan with 10,000 included processed pages, unlimited
+    retrievals, and audio/video processing.
+  entries:
+  - label: Subscription
+    name: subscription
+    type: flat
+    metric: month
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $100 per month
+    userMultiplied: false
+  - label: Included Page Processing
+    name: pages_included
+    type: included
+    metric: pages
+    limit: 10000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: Retrievals
+    name: retrievals
+    type: included
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: unlimited
+    userMultiplied: false
+  - label: Additional Pages (Fast)
+    name: pages_fast
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.02 per page
+    userMultiplied: false
+  - label: Additional Pages (Hi-res)
+    name: pages_hi_res
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.05 per page
+    userMultiplied: false
+  - label: Storage and Search
+    name: storage_search
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.002 per page / month
+    userMultiplied: false
+  - label: Audio Processing
+    name: audio
+    type: usage
+    metric: minutes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.0067 per minute
+    userMultiplied: false
+  - label: Video Processing
+    name: video
+    type: usage
+    metric: minutes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.025 per minute
+    userMultiplied: false
+  elements:
+  - name: Documents
+  - name: Retrievals
+  - name: Connections
+  - name: Entity Extraction
+  - name: Partitions
+  - name: Audio/Video Ingestion
+- id: ragie-pro
+  name: Pro
+  type: subscription
+  description: >-
+    $500/month plan with 60,000 included processed pages, unlimited
+    retrievals, and audio/video processing.
+  entries:
+  - label: Subscription
+    name: subscription
+    type: flat
+    metric: month
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $500 per month
+    userMultiplied: false
+  - label: Included Page Processing
+    name: pages_included
+    type: included
+    metric: pages
+    limit: 60000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: Retrievals
+    name: retrievals
+    type: included
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: unlimited
+    userMultiplied: false
+  - label: Additional Pages (Fast)
+    name: pages_fast
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.02 per page
+    userMultiplied: false
+  - label: Additional Pages (Hi-res)
+    name: pages_hi_res
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.05 per page
+    userMultiplied: false
+  - label: Storage and Search
+    name: storage_search
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.002 per page / month
+    userMultiplied: false
+  - label: Audio Processing
+    name: audio
+    type: usage
+    metric: minutes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.0067 per minute
+    userMultiplied: false
+  - label: Video Processing
+    name: video
+    type: usage
+    metric: minutes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.025 per minute
+    userMultiplied: false
+  elements:
+  - name: Documents
+  - name: Retrievals
+  - name: Connections
+  - name: Entity Extraction
+  - name: Partitions
+  - name: Audio/Video Ingestion
+- id: ragie-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom pricing with unlimited page processing and retrievals, custom
+    per-page and storage rates, and negotiated terms. Contact Ragie sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Custom Page and Storage Rates
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

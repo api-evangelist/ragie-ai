@@ -1,0 +1,99 @@
+aid: ragie-ai
+name: Ragie
+review:
+  question: Does Ragie expose a documented public WebSocket or SSE streaming API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was created. Ragie's asynchronous surface is delivered
+    entirely through outbound HTTP webhooks (provider-to-consumer POST callbacks
+    with an X-Signature header), not through a client-consumable WebSocket
+    (ws://, wss://) or HTTP Server-Sent Events (SSE) stream. Under the current
+    API Evangelist scope, only SSE and WebSocket transports are modeled in
+    AsyncAPI; one-directional outbound webhooks are documented in the OpenAPI/
+    apis.yml surface and reviewed here instead.
+findings:
+  summary: |
+    Ragie does not publish a documented public WebSocket or SSE streaming API.
+    The Ragie platform exposes a REST (HTTPS) API under https://api.ragie.ai for
+    document ingestion, retrievals, agentic responses, connections, entity
+    extraction, and partitions. Asynchronous event notification is provided via
+    outbound HTTP webhooks (e.g. document_status_updated, entity_extracted,
+    connection_sync_finished), which are server-initiated callbacks to a
+    consumer-hosted endpoint and not a client streaming transport. No realtime,
+    bidirectional, or token-streaming WebSocket endpoint is documented.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.ragie.ai
+      documented: true
+    - protocol: Webhooks
+      scheme: https
+      note: Outbound provider-to-consumer HTTP POST callbacks signed with X-Signature; not a client streaming transport.
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming endpoint is documented in the Ragie API reference.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Ragie's API reference, retrievals, responses, or connections pages as of the review date.
+  endpointsConfirmedRest:
+    - POST https://api.ragie.ai/documents
+    - POST https://api.ragie.ai/documents/raw
+    - POST https://api.ragie.ai/documents/from-url
+    - GET  https://api.ragie.ai/documents
+    - GET  https://api.ragie.ai/documents/{document_id}
+    - PUT  https://api.ragie.ai/documents/{document_id}
+    - DELETE https://api.ragie.ai/documents/{document_id}
+    - PATCH https://api.ragie.ai/documents/{document_id}/metadata
+    - GET  https://api.ragie.ai/documents/{document_id}/content
+    - GET  https://api.ragie.ai/documents/{document_id}/summary
+    - GET  https://api.ragie.ai/documents/{document_id}/source
+    - GET  https://api.ragie.ai/documents/{document_id}/chunks
+    - GET  https://api.ragie.ai/documents/{document_id}/chunks/{chunk_id}
+    - POST https://api.ragie.ai/retrievals
+    - POST https://api.ragie.ai/responses
+    - POST https://api.ragie.ai/connections
+    - GET  https://api.ragie.ai/connections
+    - POST https://api.ragie.ai/connections/oauth
+    - GET  https://api.ragie.ai/connections/source_type
+    - GET  https://api.ragie.ai/connections/{connection_id}
+    - PUT  https://api.ragie.ai/connections/{connection_id}
+    - DELETE https://api.ragie.ai/connections/{connection_id}
+    - POST https://api.ragie.ai/connections/{connection_id}/sync
+    - PUT  https://api.ragie.ai/connections/{connection_id}/enabled
+    - PUT  https://api.ragie.ai/connections/{connection_id}/limit
+    - POST https://api.ragie.ai/instructions
+    - GET  https://api.ragie.ai/instructions
+    - PUT  https://api.ragie.ai/instructions/{instruction_id}
+    - DELETE https://api.ragie.ai/instructions/{instruction_id}
+    - GET  https://api.ragie.ai/instructions/{instruction_id}/entities
+    - GET  https://api.ragie.ai/documents/{document_id}/entities
+    - POST https://api.ragie.ai/partitions
+    - GET  https://api.ragie.ai/partitions
+    - GET  https://api.ragie.ai/partitions/{partition_id}
+    - PATCH https://api.ragie.ai/partitions/{partition_id}
+    - DELETE https://api.ragie.ai/partitions/{partition_id}
+    - PUT  https://api.ragie.ai/partitions/{partition_id}/limits
+sources:
+  - url: https://docs.ragie.ai
+    type: Documentation
+    note: Overview and getting started; lists REST base URL https://api.ragie.ai; no WebSocket or SSE mentioned.
+  - url: https://docs.ragie.ai/reference/retrieve
+    type: APIReference
+    note: Retrieve is POST /retrievals over HTTPS; no streaming transport.
+  - url: https://docs.ragie.ai/docs/webhooks
+    type: Documentation
+    note: Asynchronous events are delivered via outbound HTTP webhooks signed with X-Signature, not a client streaming API.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE protocol surface exists. Ragie's only asynchronous
+    mechanism is outbound HTTP webhooks, which fall outside the current
+    AsyncAPI modeling scope, so no AsyncAPI document was authored. The REST
+    surface is captured in openapi/ragie-ai-openapi.yml and apis.yml.

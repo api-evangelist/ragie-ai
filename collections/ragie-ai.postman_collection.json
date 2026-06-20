@@ -1,0 +1,1312 @@
+{
+  "info": {
+    "_postman_id": "7e4700e8-e93c-4bb2-ae2a-59bbe5bc278d",
+    "name": "Ragie API",
+    "description": "Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This collection covers document ingestion, retrievals, agentic responses, data connectors, entity extraction, and partitions.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "id": "e080467a-c1c3-4a40-896f-55f5fbdd1bcc",
+      "name": "Documents",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7529effa-af43-467e-8373-3d96e9c1ef72",
+          "name": "Create Document",
+          "request": {
+            "name": "Create Document",
+            "description": {
+              "content": "Ingest a document by uploading a file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "761f916b-c1f5-4e82-93dc-4f1363114724",
+          "name": "Create Document Raw",
+          "request": {
+            "name": "Create Document Raw",
+            "description": {
+              "content": "Ingest a document from raw inline text.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/raw",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "raw"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"<string>\",\n  \"name\": \"<string>\",\n  \"partition\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "fe6a6ff8-6c49-4608-a990-f923244094fc",
+          "name": "Create Document From URL",
+          "request": {
+            "name": "Create Document From URL",
+            "description": {
+              "content": "Ingest a document from a remote URL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/from-url",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "from-url"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<string>\",\n  \"mode\": \"fast\",\n  \"partition\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "c6ef5d1f-b70d-4955-92ae-d6f2d08934b5",
+          "name": "List Documents",
+          "request": {
+            "name": "List Documents",
+            "description": {
+              "content": "List documents with pagination and metadata filtering.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "6ea463d6-616a-4d21-b9c1-7de0c4722f52",
+          "name": "Get Document",
+          "request": {
+            "name": "Get Document",
+            "description": {
+              "content": "Retrieve a single document by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "8ff9529e-ac62-49a9-979f-5352810096bf",
+          "name": "Update Document File",
+          "request": {
+            "name": "Update Document File",
+            "description": {
+              "content": "Replace a document's contents with a new uploaded file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "a0abfb02-48a5-488b-9c47-dd4d7d74c0f5",
+          "name": "Patch Document Metadata",
+          "request": {
+            "name": "Patch Document Metadata",
+            "description": {
+              "content": "Update a document's custom metadata.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}/metadata",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}",
+                "metadata"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"metadata\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "daa42d97-6225-485a-a28d-22a07ae4bf90",
+          "name": "Delete Document",
+          "request": {
+            "name": "Delete Document",
+            "description": {
+              "content": "Delete a document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "DELETE"
+          },
+          "response": []
+        },
+        {
+          "id": "6a4d316a-d469-410d-a5fc-f905395f1d95",
+          "name": "Get Document Content",
+          "request": {
+            "name": "Get Document Content",
+            "description": {
+              "content": "Return the processed text content of a document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}",
+                "content"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "61e928c8-cbfc-433d-83db-78231b45d282",
+          "name": "Get Document Summary",
+          "request": {
+            "name": "Get Document Summary",
+            "description": {
+              "content": "Return the generated summary of a document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}",
+                "summary"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "a359b7f4-9558-4c38-bd12-2b8e39669432",
+          "name": "Get Document Source",
+          "request": {
+            "name": "Get Document Source",
+            "description": {
+              "content": "Return the original source file for a document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}/source",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}",
+                "source"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "ce7318fb-d9fb-4e4b-a382-a65bdabfc821",
+          "name": "Get Document Chunks",
+          "request": {
+            "name": "Get Document Chunks",
+            "description": {
+              "content": "List the chunks of a document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}/chunks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}",
+                "chunks"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "9c35075a-4e5a-43bc-9f19-e88aa1c8b5b4",
+          "name": "Get Document Chunk",
+          "request": {
+            "name": "Get Document Chunk",
+            "description": {
+              "content": "Retrieve a single chunk of a document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}/chunks/{{chunk_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}",
+                "chunks",
+                "{{chunk_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "4b77bfa1-3239-4254-9f2f-f89bb94c1f04",
+      "name": "Retrievals",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "27a10802-f8d2-4a18-b07c-89a767b6ced7",
+          "name": "Retrieve",
+          "request": {
+            "name": "Retrieve",
+            "description": {
+              "content": "Run a semantic retrieval over indexed chunks and return scored chunks.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/retrievals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "retrievals"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"top_k\": 8,\n  \"rerank\": false,\n  \"partition\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "d501edb0-2edf-406b-96b6-3026b727daf6",
+          "name": "Create Response",
+          "request": {
+            "name": "Create Response",
+            "description": {
+              "content": "Generate an agentic response grounded in retrieved content.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/responses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "responses"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": \"<string>\",\n  \"partition\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "d174830a-92c7-4fa4-9942-12f398b457ff",
+      "name": "Connections",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7acc9535-e044-417e-8894-2325cbd77b10",
+          "name": "Create Connection",
+          "request": {
+            "name": "Create Connection",
+            "description": {
+              "content": "Create a managed data connector to an external source.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_type\": \"<string>\",\n  \"partition\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "55cc7152-c20c-401e-b7c7-15799a45d554",
+          "name": "Create OAuth Redirect URL",
+          "request": {
+            "name": "Create OAuth Redirect URL",
+            "description": {
+              "content": "Create an OAuth redirect URL to begin a connection authorization flow.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/oauth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "oauth"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_type\": \"<string>\",\n  \"redirect_uri\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "80fa3490-6b4f-44f2-be1c-196f55bcd5de",
+          "name": "List Connection Source Types",
+          "request": {
+            "name": "List Connection Source Types",
+            "description": {
+              "content": "List supported connector source types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/source_type",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "source_type"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "01492e83-c714-4eeb-aced-97dd85ed6eff",
+          "name": "List Connections",
+          "request": {
+            "name": "List Connections",
+            "description": {
+              "content": "List managed connections.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "6bddbc60-401a-4c50-93e8-d6560b368633",
+          "name": "Get Connection",
+          "request": {
+            "name": "Get Connection",
+            "description": {
+              "content": "Retrieve a single connection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/{{connection_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "{{connection_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "25e98ad6-3c10-4d99-b17d-49df5804a30c",
+          "name": "Get Connection Stats",
+          "request": {
+            "name": "Get Connection Stats",
+            "description": {
+              "content": "Retrieve statistics for a connection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/{{connection_id}}/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "{{connection_id}}",
+                "stats"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "19345cfa-c4e5-4be3-8f5e-dfb7ed8d1ca2",
+          "name": "Sync Connection",
+          "request": {
+            "name": "Sync Connection",
+            "description": {
+              "content": "Trigger an on-demand sync of a connection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/{{connection_id}}/sync",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "{{connection_id}}",
+                "sync"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "POST"
+          },
+          "response": []
+        },
+        {
+          "id": "650074f0-e33b-40a2-9082-ff1513d5ee49",
+          "name": "Set Connection Enabled",
+          "request": {
+            "name": "Set Connection Enabled",
+            "description": {
+              "content": "Enable or disable a connection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/{{connection_id}}/enabled",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "{{connection_id}}",
+                "enabled"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "8a17d0d6-6a97-4ad4-8190-5eee9dafdf2a",
+          "name": "Set Connection Limits",
+          "request": {
+            "name": "Set Connection Limits",
+            "description": {
+              "content": "Set the page-processing limit for a connection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/{{connection_id}}/limit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "{{connection_id}}",
+                "limit"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pages_processed_limit_monthly\": 10000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "2fa03c59-e977-4c54-808f-130968b96204",
+          "name": "Update Connection",
+          "request": {
+            "name": "Update Connection",
+            "description": {
+              "content": "Update a connection's configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/{{connection_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "{{connection_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"metadata\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "e681ec2f-abaf-40db-b47b-afd33fd4e36d",
+          "name": "Delete Connection",
+          "request": {
+            "name": "Delete Connection",
+            "description": {
+              "content": "Delete a connection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/connections/{{connection_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "connections",
+                "{{connection_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "DELETE"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "80be8ee0-c551-4de4-8cb6-d5b2ea47714d",
+      "name": "Entities",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ea33edac-b066-4972-b113-359f365c2b9a",
+          "name": "Create Instruction",
+          "request": {
+            "name": "Create Instruction",
+            "description": {
+              "content": "Create an extraction instruction defining entities to extract.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/instructions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "instructions"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "0adb7257-0e77-4260-956c-bebda6cfe404",
+          "name": "List Instructions",
+          "request": {
+            "name": "List Instructions",
+            "description": {
+              "content": "List extraction instructions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/instructions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "instructions"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "0540dec1-5259-4589-ba11-0a9b631bdf75",
+          "name": "Update Instruction",
+          "request": {
+            "name": "Update Instruction",
+            "description": {
+              "content": "Update an extraction instruction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/instructions/{{instruction_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "instructions",
+                "{{instruction_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "befc08f5-6c7c-4be5-ad3a-2fc6236ed850",
+          "name": "Delete Instruction",
+          "request": {
+            "name": "Delete Instruction",
+            "description": {
+              "content": "Delete an extraction instruction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/instructions/{{instruction_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "instructions",
+                "{{instruction_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "DELETE"
+          },
+          "response": []
+        },
+        {
+          "id": "c806b640-fa3b-4456-a118-89c000116a77",
+          "name": "Get Instruction Extracted Entities",
+          "request": {
+            "name": "Get Instruction Extracted Entities",
+            "description": {
+              "content": "Get entities extracted for an instruction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/instructions/{{instruction_id}}/entities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "instructions",
+                "{{instruction_id}}",
+                "entities"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "d6dfc2ae-2aa7-4599-aade-6f2d878620ea",
+          "name": "Get Document Extracted Entities",
+          "request": {
+            "name": "Get Document Extracted Entities",
+            "description": {
+              "content": "Get entities extracted for a document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{document_id}}/entities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "documents",
+                "{{document_id}}",
+                "entities"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "0a8d0dec-83e5-4458-ab09-1b8ce80b52b5",
+      "name": "Partitions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "016ae309-1365-44d9-bee8-4e1b9aed5d59",
+          "name": "Create Partition",
+          "request": {
+            "name": "Create Partition",
+            "description": {
+              "content": "Create a partition for multi-tenant data isolation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partitions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "partitions"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "bd0353b2-8848-4269-afd7-99a62e4d87d8",
+          "name": "List Partitions",
+          "request": {
+            "name": "List Partitions",
+            "description": {
+              "content": "List partitions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partitions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "partitions"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "f9303eb4-f8d6-44be-895d-60f3cea33524",
+          "name": "Get Partition",
+          "request": {
+            "name": "Get Partition",
+            "description": {
+              "content": "Retrieve a single partition.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partitions/{{partition_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "partitions",
+                "{{partition_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "id": "9ebfdaa9-f205-4e75-b91b-6da095c18572",
+          "name": "Update Partition",
+          "request": {
+            "name": "Update Partition",
+            "description": {
+              "content": "Update a partition.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partitions/{{partition_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "partitions",
+                "{{partition_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "99eb2ab1-7cb4-4372-ab84-c2f8c2206fd8",
+          "name": "Set Partition Limits",
+          "request": {
+            "name": "Set Partition Limits",
+            "description": {
+              "content": "Set processed and hosted page limits for a partition.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partitions/{{partition_id}}/limits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "partitions",
+                "{{partition_id}}",
+                "limits"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pages_processed_limit_monthly\": 60000,\n  \"pages_hosted_limit_monthly\": 60000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "ac5dc93b-6f2d-410e-b4ff-56272fc9b5f7",
+          "name": "Delete Partition",
+          "request": {
+            "name": "Delete Partition",
+            "description": {
+              "content": "Delete a partition.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partitions/{{partition_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "partitions",
+                "{{partition_id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "DELETE"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.ragie.ai"
+    },
+    {
+      "key": "bearerToken",
+      "value": ""
+    }
+  ]
+}

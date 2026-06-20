@@ -1,0 +1,155 @@
+aid: ragie-ai
+url: https://raw.githubusercontent.com/api-evangelist/ragie-ai/refs/heads/main/apis.yml
+name: Ragie
+kind: company
+description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service
+  platform. Its REST API ingests documents (file upload, raw, or from URL), processes
+  them into searchable chunks, and serves low-latency semantic retrieval, agentic
+  responses, entity extraction, and managed data connectors to sources like Google
+  Drive, Notion, and Confluence.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- AI
+- RAG
+- Retrieval
+- Vector Search
+- Document Ingestion
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: ragie-ai:ragie-documents-api
+  name: Ragie Documents API
+  tags:
+  - Documents
+  - Ingestion
+  - Chunks
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.ragie.ai/reference/createdocument
+  baseURL: https://api.ragie.ai
+  properties:
+  - url: https://docs.ragie.ai/docs/getting-started
+    type: Documentation
+  - url: https://docs.ragie.ai/reference/createdocument
+    type: APIReference
+  - url: openapi/ragie-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/ragie-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/ragie-ai.opencollection.json
+    type: OpenCollection
+  description: Create documents by file upload, raw text, or remote URL; list, get,
+    update, and delete documents; and read processed content, summaries, chunks, and
+    chunk content as the document moves through Ragie's ingestion pipeline to a ready
+    state.
+- aid: ragie-ai:ragie-retrievals-api
+  name: Ragie Retrievals API
+  tags:
+  - Retrievals
+  - Semantic Search
+  - Responses
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.ragie.ai/reference/retrieve
+  baseURL: https://api.ragie.ai
+  properties:
+  - url: https://docs.ragie.ai/docs/retrievals-guide
+    type: Documentation
+  - url: https://docs.ragie.ai/reference/retrieve
+    type: APIReference
+  - url: openapi/ragie-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/ragie-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/ragie-ai.opencollection.json
+    type: OpenCollection
+  description: Semantic retrieval over indexed chunks via POST /retrievals with top_k,
+    metadata filters, reranking, and recency bias, plus agentic /responses generation
+    that grounds answers in retrieved context.
+- aid: ragie-ai:ragie-connections-api
+  name: Ragie Connections API
+  tags:
+  - Connections
+  - Connectors
+  - Data Sync
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.ragie.ai/docs/connections
+  baseURL: https://api.ragie.ai
+  properties:
+  - url: https://docs.ragie.ai/docs/connections
+    type: Documentation
+  - url: https://docs.ragie.ai/reference/createconnection
+    type: APIReference
+  - url: openapi/ragie-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/ragie-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/ragie-ai.opencollection.json
+    type: OpenCollection
+  description: Managed data connectors that continuously sync content from sources
+    such as Google Drive, Notion, and Confluence - create OAuth connections and
+    authenticators, list source types, sync on demand, set page limits, and enable
+    or disable connections.
+- aid: ragie-ai:ragie-entities-api
+  name: Ragie Entities and Extraction API
+  tags:
+  - Entities
+  - Extraction
+  - Instructions
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.ragie.ai/reference/createinstruction
+  baseURL: https://api.ragie.ai
+  properties:
+  - url: https://docs.ragie.ai/docs/entity-extraction
+    type: Documentation
+  - url: https://docs.ragie.ai/reference/createinstruction
+    type: APIReference
+  - url: openapi/ragie-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/ragie-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/ragie-ai.opencollection.json
+    type: OpenCollection
+  description: Define extraction instructions with a JSON schema and read the
+    structured entities Ragie extracts from documents, including per-instruction and
+    per-document extracted entities and extraction logs.
+- aid: ragie-ai:ragie-partitions-api
+  name: Ragie Partitions API
+  tags:
+  - Partitions
+  - Multi-Tenancy
+  - Isolation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.ragie.ai/reference/createpartition
+  baseURL: https://api.ragie.ai
+  properties:
+  - url: https://docs.ragie.ai/docs/partitions
+    type: Documentation
+  - url: https://docs.ragie.ai/reference/createpartition
+    type: APIReference
+  - url: openapi/ragie-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/ragie-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/ragie-ai.opencollection.json
+    type: OpenCollection
+  description: Logical isolation boundaries for multi-tenant data - create, list,
+    get, update, and delete partitions, and set per-partition page and hosted-pages
+    limits to scope documents and retrievals per tenant.
+common:
+- type: GitHubOrganization
+  url: https://github.com/ragieai
+- type: LinkedIn
+  url: https://www.linkedin.com/company/ragie
+- type: Website
+  url: https://www.ragie.ai
+- type: Documentation
+  url: https://docs.ragie.ai
+- type: Plans
+  url: plans/ragie-ai-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/ragie-ai-rate-limits.yml
+- type: FinOps
+  url: finops/ragie-ai-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
