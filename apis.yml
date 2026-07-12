@@ -136,6 +136,12 @@ apis:
     get, update, and delete partitions, and set per-partition page and hosted-pages
     limits to scope documents and retrievals per tenant.
 common:
+- type: VulnerabilityDisclosure
+  url: security/ragie-ai-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/ragie-ai-domain-security.yml
+- type: Authentication
+  url: authentication/ragie-ai-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/ragieai
 - type: LinkedIn
@@ -150,6 +156,8 @@ common:
   url: rate-limits/ragie-ai-rate-limits.yml
 - type: FinOps
   url: finops/ragie-ai-finops.yml
+- type: Blog
+  url: https://www.ragie.ai/blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
