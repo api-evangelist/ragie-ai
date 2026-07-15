@@ -136,6 +136,8 @@ apis:
     get, update, and delete partitions, and set per-partition page and hosted-pages
     limits to scope documents and retrievals per tenant.
 common:
+- type: AgenticAccess
+  url: agentic-access/ragie-ai-agentic-access.yml
 - type: VulnerabilityDisclosure
   url: security/ragie-ai-vulnerability-disclosure.yml
 - type: DomainSecurity
