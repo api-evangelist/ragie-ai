@@ -1,0 +1,178 @@
+openapi: 3.0.1
+info:
+  title: Ragie Connections Retrievals API
+  description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.
+  termsOfService: https://www.ragie.ai/terms-of-service
+  contact:
+    name: Ragie Support
+    url: https://www.ragie.ai
+    email: support@ragie.ai
+  version: '1.0'
+servers:
+- url: https://api.ragie.ai
+security:
+- bearerAuth: []
+tags:
+- name: Retrievals
+paths:
+  /retrievals:
+    post:
+      operationId: retrieve
+      tags:
+      - Retrievals
+      summary: Retrieve
+      description: Run a semantic retrieval over indexed chunks and return the most relevant scored chunks for the query.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrievalRequest'
+      responses:
+        '200':
+          description: Scored chunks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /responses:
+    post:
+      operationId: createResponse
+      tags:
+      - Retrievals
+      summary: Create Response
+      description: Generate an agentic response grounded in content retrieved from the knowledge base.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - input
+              properties:
+                input:
+                  type: string
+                  description: The user input or question.
+                partition:
+                  type: string
+                instructions:
+                  type: string
+                filter:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The generated response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  output:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  responses:
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PaymentRequired:
+      description: Plan limit reached or payment required.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Too many requests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    RetrievalRequest:
+      type: object
+      required:
+      - query
+      properties:
+        query:
+          type: string
+          description: The query to search with when retrieving document chunks.
+        top_k:
+          type: integer
+          default: 8
+          description: Maximum number of chunks to return.
+        filter:
+          type: object
+          additionalProperties: true
+          description: Metadata filter supporting operators $eq, $ne, $gt, $gte, $lt, $lte, $in, $nin.
+        rerank:
+          type: boolean
+          default: false
+        max_chunks_per_document:
+          type: integer
+        recency_bias:
+          type: boolean
+          default: false
+        partition:
+          type: string
+    RetrievalResponse:
+      type: object
+      properties:
+        scored_chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoredChunk'
+    ScoredChunk:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        text:
+          type: string
+        score:
+          type: number
+          format: float
+        document_id:
+          type: string
+          format: uuid
+        document_name:
+          type: string
+        document_metadata:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Ragie API key passed as a Bearer token in the Authorization header.

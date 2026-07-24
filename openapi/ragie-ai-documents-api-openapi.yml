@@ -1,0 +1,504 @@
+openapi: 3.0.1
+info:
+  title: Ragie Connections Documents API
+  description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.
+  termsOfService: https://www.ragie.ai/terms-of-service
+  contact:
+    name: Ragie Support
+    url: https://www.ragie.ai
+    email: support@ragie.ai
+  version: '1.0'
+servers:
+- url: https://api.ragie.ai
+security:
+- bearerAuth: []
+tags:
+- name: Documents
+paths:
+  /documents:
+    post:
+      operationId: createDocument
+      tags:
+      - Documents
+      summary: Create Document
+      description: Ingest a document by uploading a file. The document is processed asynchronously through Ragie's pipeline (partitioning, chunking, indexing) until it reaches the ready state.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The binary file to ingest.
+                mode:
+                  type: string
+                  enum:
+                  - fast
+                  - hi_res
+                  description: Partition strategy controlling extraction fidelity.
+                metadata:
+                  type: object
+                  additionalProperties: true
+                  description: Custom key-value metadata for filtering.
+                name:
+                  type: string
+                external_id:
+                  type: string
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: Document created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    get:
+      operationId: listDocuments
+      tags:
+      - Documents
+      summary: List Documents
+      parameters:
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          default: 25
+      - name: partition
+        in: query
+        schema:
+          type: string
+      - name: filter
+        in: query
+        schema:
+          type: string
+        description: JSON metadata filter.
+      responses:
+        '200':
+          description: A page of documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/raw:
+    post:
+      operationId: createDocumentRaw
+      tags:
+      - Documents
+      summary: Create Document Raw
+      description: Ingest a document from raw inline text rather than a file.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - data
+              properties:
+                data:
+                  type: string
+                  description: Raw text content to ingest.
+                metadata:
+                  type: object
+                  additionalProperties: true
+                name:
+                  type: string
+                external_id:
+                  type: string
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: Document created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /documents/from-url:
+    post:
+      operationId: createDocumentFromUrl
+      tags:
+      - Documents
+      summary: Create Document From URL
+      description: Ingest a document by fetching it from a remote URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  format: uri
+                mode:
+                  type: string
+                  enum:
+                  - fast
+                  - hi_res
+                metadata:
+                  type: object
+                  additionalProperties: true
+                name:
+                  type: string
+                external_id:
+                  type: string
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: Document created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /documents/{document_id}:
+    get:
+      operationId: getDocument
+      tags:
+      - Documents
+      summary: Get Document
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: The document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateDocumentFile
+      tags:
+      - Documents
+      summary: Update Document File
+      description: Replace a document's contents with a new uploaded file.
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Document updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteDocument
+      tags:
+      - Documents
+      summary: Delete Document
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Document deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /documents/{document_id}/metadata:
+    patch:
+      operationId: patchDocumentMetadata
+      tags:
+      - Documents
+      summary: Patch Document Metadata
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - metadata
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Metadata updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/content:
+    get:
+      operationId: getDocumentContent
+      tags:
+      - Documents
+      summary: Get Document Content
+      description: Returns the processed text content of the document.
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Document content.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/summary:
+    get:
+      operationId: getDocumentSummary
+      tags:
+      - Documents
+      summary: Get Document Summary
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Document summary.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/source:
+    get:
+      operationId: getDocumentSource
+      tags:
+      - Documents
+      summary: Get Document Source
+      description: Returns the original source file for the document.
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: The source file.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/chunks:
+    get:
+      operationId: getDocumentChunks
+      tags:
+      - Documents
+      summary: Get Document Chunks
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of chunks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chunks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Chunk'
+                  cursor:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/chunks/{chunk_id}:
+    get:
+      operationId: getDocumentChunk
+      tags:
+      - Documents
+      summary: Get Document Chunk
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      - name: chunk_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The chunk.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chunk'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PaymentRequired:
+      description: Plan limit reached or payment required.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Too many requests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    DocumentList:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        cursor:
+          type: string
+    Chunk:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        document_id:
+          type: string
+          format: uuid
+        text:
+          type: string
+        index:
+          type: integer
+        metadata:
+          type: object
+          additionalProperties: true
+    Document:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - pending
+          - partitioning
+          - partitioned
+          - refined
+          - chunked
+          - indexed
+          - summary_indexed
+          - ready
+          - failed
+        name:
+          type: string
+        external_id:
+          type: string
+        partition:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        chunk_count:
+          type: integer
+        page_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
+  parameters:
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Ragie API key passed as a Bearer token in the Authorization header.

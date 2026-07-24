@@ -1,0 +1,214 @@
+openapi: 3.0.1
+info:
+  title: Ragie Connections Partitions API
+  description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.
+  termsOfService: https://www.ragie.ai/terms-of-service
+  contact:
+    name: Ragie Support
+    url: https://www.ragie.ai
+    email: support@ragie.ai
+  version: '1.0'
+servers:
+- url: https://api.ragie.ai
+security:
+- bearerAuth: []
+tags:
+- name: Partitions
+paths:
+  /partitions:
+    post:
+      operationId: createPartition
+      tags:
+      - Partitions
+      summary: Create Partition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartitionCreate'
+      responses:
+        '200':
+          description: Partition created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      operationId: listPartitions
+      tags:
+      - Partitions
+      summary: List Partitions
+      parameters:
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of partitions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  partitions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Partition'
+                  cursor:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /partitions/{partition_id}:
+    get:
+      operationId: getPartition
+      tags:
+      - Partitions
+      summary: Get Partition
+      parameters:
+      - $ref: '#/components/parameters/PartitionId'
+      responses:
+        '200':
+          description: The partition.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updatePartition
+      tags:
+      - Partitions
+      summary: Update Partition
+      parameters:
+      - $ref: '#/components/parameters/PartitionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Partition updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deletePartition
+      tags:
+      - Partitions
+      summary: Delete Partition
+      parameters:
+      - $ref: '#/components/parameters/PartitionId'
+      responses:
+        '200':
+          description: Partition deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /partitions/{partition_id}/limits:
+    put:
+      operationId: setPartitionLimits
+      tags:
+      - Partitions
+      summary: Set Partition Limits
+      parameters:
+      - $ref: '#/components/parameters/PartitionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pages_processed_limit_monthly:
+                  type: integer
+                pages_hosted_limit_monthly:
+                  type: integer
+      responses:
+        '200':
+          description: Partition limits updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    PartitionCreate:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Lowercase alphanumeric identifier with underscores or hyphens.
+        pages_processed_limit_monthly:
+          type: integer
+        pages_hosted_limit_monthly:
+          type: integer
+    Partition:
+      type: object
+      properties:
+        name:
+          type: string
+        pages_processed_limit_monthly:
+          type: integer
+        pages_hosted_limit_monthly:
+          type: integer
+        document_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
+  responses:
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PartitionId:
+      name: partition_id
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Ragie API key passed as a Bearer token in the Authorization header.

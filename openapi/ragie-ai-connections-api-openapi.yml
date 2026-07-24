@@ -1,0 +1,337 @@
+openapi: 3.0.1
+info:
+  title: Ragie Connections API
+  description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.
+  termsOfService: https://www.ragie.ai/terms-of-service
+  contact:
+    name: Ragie Support
+    url: https://www.ragie.ai
+    email: support@ragie.ai
+  version: '1.0'
+servers:
+- url: https://api.ragie.ai
+security:
+- bearerAuth: []
+tags:
+- name: Connections
+paths:
+  /connections:
+    post:
+      operationId: createConnection
+      tags:
+      - Connections
+      summary: Create Connection
+      description: Create a managed data connector to an external source.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectionCreate'
+      responses:
+        '200':
+          description: Connection created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      operationId: listConnections
+      tags:
+      - Connections
+      summary: List Connections
+      parameters:
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of connections.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  connections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Connection'
+                  cursor:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/oauth:
+    post:
+      operationId: createOAuthRedirectUrl
+      tags:
+      - Connections
+      summary: Create OAuth Redirect URL
+      description: Create an OAuth redirect URL to begin a connection authorization flow.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - source_type
+              properties:
+                source_type:
+                  type: string
+                  description: The connector source type, e.g. google_drive, notion.
+                redirect_uri:
+                  type: string
+                  format: uri
+                partition:
+                  type: string
+      responses:
+        '200':
+          description: OAuth redirect URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/source_type:
+    get:
+      operationId: listConnectionSourceTypes
+      tags:
+      - Connections
+      summary: List Connection Source Types
+      responses:
+        '200':
+          description: Supported connector source types.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  source_types:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}:
+    get:
+      operationId: getConnection
+      tags:
+      - Connections
+      summary: Get Connection
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: The connection.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateConnection
+      tags:
+      - Connections
+      summary: Update Connection
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+                mode:
+                  type: string
+      responses:
+        '200':
+          description: Connection updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteConnection
+      tags:
+      - Connections
+      summary: Delete Connection
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: Connection deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/stats:
+    get:
+      operationId: getConnectionStats
+      tags:
+      - Connections
+      summary: Get Connection Stats
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: Connection statistics.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/sync:
+    post:
+      operationId: syncConnection
+      tags:
+      - Connections
+      summary: Sync Connection
+      description: Trigger an on-demand sync of the connection.
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      responses:
+        '200':
+          description: Sync triggered.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/enabled:
+    put:
+      operationId: setConnectionEnabled
+      tags:
+      - Connections
+      summary: Set Connection Enabled
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Connection enabled state updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /connections/{connection_id}/limit:
+    put:
+      operationId: setConnectionLimits
+      tags:
+      - Connections
+      summary: Set Connection Limits
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pages_processed_limit_monthly:
+                  type: integer
+      responses:
+        '200':
+          description: Connection limits updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    ConnectionId:
+      name: connection_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    ConnectionCreate:
+      type: object
+      required:
+      - source_type
+      properties:
+        source_type:
+          type: string
+        name:
+          type: string
+        partition:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+    Connection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        source_type:
+          type: string
+        name:
+          type: string
+        enabled:
+          type: boolean
+        partition:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Ragie API key passed as a Bearer token in the Authorization header.

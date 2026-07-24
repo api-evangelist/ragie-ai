@@ -1,0 +1,242 @@
+openapi: 3.0.1
+info:
+  title: Ragie Connections Entities API
+  description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.
+  termsOfService: https://www.ragie.ai/terms-of-service
+  contact:
+    name: Ragie Support
+    url: https://www.ragie.ai
+    email: support@ragie.ai
+  version: '1.0'
+servers:
+- url: https://api.ragie.ai
+security:
+- bearerAuth: []
+tags:
+- name: Entities
+paths:
+  /instructions:
+    post:
+      operationId: createInstruction
+      tags:
+      - Entities
+      summary: Create Instruction
+      description: Create an extraction instruction that defines a JSON schema of entities Ragie should extract from matching documents.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructionCreate'
+      responses:
+        '200':
+          description: Instruction created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instruction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      operationId: listInstructions
+      tags:
+      - Entities
+      summary: List Instructions
+      responses:
+        '200':
+          description: A page of instructions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  instructions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instruction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /instructions/{instruction_id}:
+    put:
+      operationId: updateInstruction
+      tags:
+      - Entities
+      summary: Update Instruction
+      parameters:
+      - $ref: '#/components/parameters/InstructionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructionCreate'
+      responses:
+        '200':
+          description: Instruction updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instruction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteInstruction
+      tags:
+      - Entities
+      summary: Delete Instruction
+      parameters:
+      - $ref: '#/components/parameters/InstructionId'
+      responses:
+        '200':
+          description: Instruction deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /instructions/{instruction_id}/entities:
+    get:
+      operationId: getInstructionExtractedEntities
+      tags:
+      - Entities
+      summary: Get Instruction Extracted Entities
+      parameters:
+      - $ref: '#/components/parameters/InstructionId'
+      responses:
+        '200':
+          description: Extracted entities for the instruction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Entity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /documents/{document_id}/entities:
+    get:
+      operationId: getDocumentExtractedEntities
+      tags:
+      - Entities
+      summary: Get Document Extracted Entities
+      parameters:
+      - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Extracted entities for the document.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Entity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Entity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        document_id:
+          type: string
+          format: uuid
+        instruction_id:
+          type: string
+          format: uuid
+        data:
+          type: object
+          additionalProperties: true
+    Instruction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        prompt:
+          type: string
+        entity_schema:
+          type: object
+          additionalProperties: true
+        scope:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    InstructionCreate:
+      type: object
+      required:
+      - name
+      - prompt
+      - entity_schema
+      properties:
+        name:
+          type: string
+        prompt:
+          type: string
+          description: Natural-language extraction instruction.
+        entity_schema:
+          type: object
+          description: JSON schema describing the entities to extract.
+          additionalProperties: true
+        scope:
+          type: string
+          enum:
+          - document
+          - chunk
+        filter:
+          type: object
+          additionalProperties: true
+        active:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
+  parameters:
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    InstructionId:
+      name: instruction_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Ragie API key passed as a Bearer token in the Authorization header.
