@@ -1,0 +1,22 @@
+{
+  "provider": "ragie-ai",
+  "sources": [
+    "ragie-ai-connections-api-openapi.yml",
+    "ragie-ai-documents-api-openapi.yml",
+    "ragie-ai-entities-api-openapi.yml",
+    "ragie-ai-partitions-api-openapi.yml",
+    "ragie-ai-retrievals-api-openapi.yml"
+  ],
+  "outputs": [
+    "ragie-ai-connections-api-openapi.yml",
+    "ragie-ai-documents-api-openapi.yml",
+    "ragie-ai-entities-api-openapi.yml",
+    "ragie-ai-partitions-api-openapi.yml",
+    "ragie-ai-retrievals-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
