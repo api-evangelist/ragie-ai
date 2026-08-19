@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ragie Connections Entities API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Entities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Instructions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/instructions"
+          },
+          "docs": "List Instructions"
+        },
+        {
+          "info": {
+            "name": "Create Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/instructions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an extraction instruction that defines a JSON schema of entities Ragie should extract from matching documents."
+        },
+        {
+          "info": {
+            "name": "Update Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/instructions/:instruction_id",
+            "params": [
+              {
+                "name": "instruction_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Instruction"
+        },
+        {
+          "info": {
+            "name": "Delete Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/instructions/:instruction_id",
+            "params": [
+              {
+                "name": "instruction_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete Instruction"
+        },
+        {
+          "info": {
+            "name": "Get Instruction Extracted Entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/instructions/:instruction_id/entities",
+            "params": [
+              {
+                "name": "instruction_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Instruction Extracted Entities"
+        },
+        {
+          "info": {
+            "name": "Get Document Extracted Entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/:document_id/entities",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Document Extracted Entities"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,971 @@
+{
+  "item": [
+    {
+      "id": "56dd260a-426d-4169-aa19-591c5d9aa4e0",
+      "name": "Entities",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7cbfab83-e548-44f9-a3e0-78ca0ea93fa1",
+          "name": "Create Instruction",
+          "request": {
+            "name": "Create Instruction",
+            "description": {
+              "content": "Create an extraction instruction that defines a JSON schema of entities Ragie should extract from matching documents.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "instructions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {\n    \"key_0\": 6781.064547845368\n  },\n  \"scope\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 5436,\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": 8629\n  },\n  \"active\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dfa0e242-049c-4a75-845c-71b6cc09eedf",
+              "name": "Instruction created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {\n    \"key_0\": 8571,\n    \"key_1\": \"string\",\n    \"key_2\": false\n  },\n  \"scope\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 2920\n  },\n  \"active\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"23a41f3c-0664-e22a-1d85-3b6ee38f31c8\",\n  \"name\": \"string\",\n  \"prompt\": \"string\",\n  \"entity_schema\": {\n    \"key_0\": true\n  },\n  \"scope\": \"string\",\n  \"active\": false,\n  \"created_at\": \"2009-10-10T20:58:10.813Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a796394-b837-414b-90e9-bfdc21f0fc47",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {\n    \"key_0\": 8571,\n    \"key_1\": \"string\",\n    \"key_2\": false\n  },\n  \"scope\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 2920\n  },\n  \"active\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"status_code\": 9199\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8f29cf5-1125-4056-9fb5-5c02764455a1",
+              "name": "Request validation failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {\n    \"key_0\": 8571,\n    \"key_1\": \"string\",\n    \"key_2\": false\n  },\n  \"scope\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 2920\n  },\n  \"active\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"status_code\": 9199\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "efe528de-427c-4336-b02a-623ed3a82746",
+          "name": "List Instructions",
+          "request": {
+            "name": "List Instructions",
+            "description": {},
+            "url": {
+              "path": [
+                "instructions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "85daaf14-adb1-4e2e-b6a4-cdbfae10fa4b",
+              "name": "A page of instructions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"instructions\": [\n    {\n      \"id\": \"99c77b40-c6d5-c44f-37e9-fb4c3840a92e\",\n      \"name\": \"string\",\n      \"prompt\": \"string\",\n      \"entity_schema\": {\n        \"key_0\": 8164\n      },\n      \"scope\": \"string\",\n      \"active\": false,\n      \"created_at\": \"2013-07-05T19:42:35.476Z\"\n    },\n    {\n      \"id\": \"7bdc8d4a-db1a-1be8-cda1-70b3bc9f5eb2\",\n      \"name\": \"string\",\n      \"prompt\": \"string\",\n      \"entity_schema\": {\n        \"key_0\": 5303,\n        \"key_1\": 5855\n      },\n      \"scope\": \"string\",\n      \"active\": false,\n      \"created_at\": \"2020-09-27T14:03:49.754Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "252f0583-25ca-4bbe-93db-c561383cdfae",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"status_code\": 9199\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e2adc060-5e20-4fda-98b7-38c77b3ddfa3",
+          "name": "Update Instruction",
+          "request": {
+            "name": "Update Instruction",
+            "description": {},
+            "url": {
+              "path": [
+                "instructions",
+                ":instruction_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "instruction_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {\n    \"key_0\": 6781.064547845368\n  },\n  \"scope\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 5436,\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": 8629\n  },\n  \"active\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "58575ff4-3f79-45db-b1e0-d688e1aba946",
+              "name": "Instruction updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {\n    \"key_0\": 8571,\n    \"key_1\": \"string\",\n    \"key_2\": false\n  },\n  \"scope\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 2920\n  },\n  \"active\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"23a41f3c-0664-e22a-1d85-3b6ee38f31c8\",\n  \"name\": \"string\",\n  \"prompt\": \"string\",\n  \"entity_schema\": {\n    \"key_0\": true\n  },\n  \"scope\": \"string\",\n  \"active\": false,\n  \"created_at\": \"2009-10-10T20:58:10.813Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "51845faa-2b14-44af-a5e2-838adecb130b",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"entity_schema\": {\n    \"key_0\": 8571,\n    \"key_1\": \"string\",\n    \"key_2\": false\n  },\n  \"scope\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 2920\n  },\n  \"active\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"status_code\": 9199\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4123875e-9b11-49fd-95a9-1dd54fb1e34b",
+          "name": "Delete Instruction",
+          "request": {
+            "name": "Delete Instruction",
+            "description": {},
+            "url": {
+              "path": [
+                "instructions",
+                ":instruction_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "instruction_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9c8b9323-ca10-492f-96a2-90d4f3fbc498",
+              "name": "Instruction deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fcbb7d52-76d7-42ab-8de8-ab22494df14d",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"status_code\": 9199\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b21b462e-e11e-43c3-984f-b8cc02f102bc",
+          "name": "Get Instruction Extracted Entities",
+          "request": {
+            "name": "Get Instruction Extracted Entities",
+            "description": {},
+            "url": {
+              "path": [
+                "instructions",
+                ":instruction_id",
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "instruction_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8a7f5f41-f482-4a4e-bf56-d1609f83ab35",
+              "name": "Extracted entities for the instruction.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions",
+                    ":instruction_id",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"entities\": [\n    {\n      \"id\": \"de235f85-c093-327f-6e47-a044a9940ec5\",\n      \"document_id\": \"a40b9e13-90b9-7d49-21fd-0c077ac64dc8\",\n      \"instruction_id\": \"fc77e9dc-7566-93d2-bfd1-b8900e13f580\",\n      \"data\": {\n        \"key_0\": \"string\",\n        \"key_1\": false,\n        \"key_2\": false,\n        \"key_3\": true\n      }\n    },\n    {\n      \"id\": \"85c6f6e6-01f9-ac27-18d0-f002ceb6690e\",\n      \"document_id\": \"fe98cc0f-47af-c53c-e7e0-2878dd5df882\",\n      \"instruction_id\": \"b328e897-056b-a72b-a052-5d0e417f43a0\",\n      \"data\": {\n        \"key_0\": true\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2fe3d49-9792-42c3-9023-9bf83a8deab3",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instructions",
+                    ":instruction_id",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"status_code\": 9199\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1f53dd78-8254-4e14-b91e-64dbf9b8304c",
+          "name": "Get Document Extracted Entities",
+          "request": {
+            "name": "Get Document Extracted Entities",
+            "description": {},
+            "url": {
+              "path": [
+                "documents",
+                ":document_id",
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "document_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "56d02617-b997-429f-a5d8-ca762aa3b685",
+              "name": "Extracted entities for the document.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "documents",
+                    ":document_id",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "document_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"entities\": [\n    {\n      \"id\": \"de235f85-c093-327f-6e47-a044a9940ec5\",\n      \"document_id\": \"a40b9e13-90b9-7d49-21fd-0c077ac64dc8\",\n      \"instruction_id\": \"fc77e9dc-7566-93d2-bfd1-b8900e13f580\",\n      \"data\": {\n        \"key_0\": \"string\",\n        \"key_1\": false,\n        \"key_2\": false,\n        \"key_3\": true\n      }\n    },\n    {\n      \"id\": \"85c6f6e6-01f9-ac27-18d0-f002ceb6690e\",\n      \"document_id\": \"fe98cc0f-47af-c53c-e7e0-2878dd5df882\",\n      \"instruction_id\": \"b328e897-056b-a72b-a052-5d0e417f43a0\",\n      \"data\": {\n        \"key_0\": true\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b146ee49-f381-4d8f-bb3d-19f92de83a1e",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "documents",
+                    ":document_id",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "document_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"status_code\": 9199\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ragie.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "21ca72e2-33fd-4ea9-8f0c-ae3039a76c24",
+    "name": "Ragie Connections Entities API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.\n\nContact Support:\n Name: Ragie Support\n Email: support@ragie.ai",
+      "type": "text/plain"
+    }
+  }
+}

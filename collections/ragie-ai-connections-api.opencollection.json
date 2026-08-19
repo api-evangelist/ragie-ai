@@ -1,0 +1,226 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ragie Connections API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Connections"
+        },
+        {
+          "info": {
+            "name": "Create Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/connections",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a managed data connector to an external source."
+        },
+        {
+          "info": {
+            "name": "Create OAuth Redirect URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/connections/oauth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an OAuth redirect URL to begin a connection authorization flow."
+        },
+        {
+          "info": {
+            "name": "List Connection Source Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections/source_type"
+          },
+          "docs": "List Connection Source Types"
+        },
+        {
+          "info": {
+            "name": "Get Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections/:connection_id",
+            "params": [
+              {
+                "name": "connection_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Connection"
+        },
+        {
+          "info": {
+            "name": "Update Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/connections/:connection_id",
+            "params": [
+              {
+                "name": "connection_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Connection"
+        },
+        {
+          "info": {
+            "name": "Delete Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/connections/:connection_id",
+            "params": [
+              {
+                "name": "connection_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete Connection"
+        },
+        {
+          "info": {
+            "name": "Get Connection Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/connections/:connection_id/stats",
+            "params": [
+              {
+                "name": "connection_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Connection Stats"
+        },
+        {
+          "info": {
+            "name": "Sync Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/connections/:connection_id/sync",
+            "params": [
+              {
+                "name": "connection_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Trigger an on-demand sync of the connection."
+        },
+        {
+          "info": {
+            "name": "Set Connection Enabled",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/connections/:connection_id/enabled",
+            "params": [
+              {
+                "name": "connection_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set Connection Enabled"
+        },
+        {
+          "info": {
+            "name": "Set Connection Limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/connections/:connection_id/limit",
+            "params": [
+              {
+                "name": "connection_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set Connection Limits"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

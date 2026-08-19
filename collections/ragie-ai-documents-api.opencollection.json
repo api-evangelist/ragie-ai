@@ -1,0 +1,325 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ragie Connections Documents API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "partition",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "JSON metadata filter."
+              }
+            ]
+          },
+          "docs": "List Documents"
+        },
+        {
+          "info": {
+            "name": "Create Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/documents",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "mode",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "metadata",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "external_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "partition",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Ingest a document by uploading a file. The document is processed asynchronously through Ragie's pipeline (partitioning, chunking, indexing) until it reaches the ready state."
+        },
+        {
+          "info": {
+            "name": "Create Document Raw",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/documents/raw",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Ingest a document from raw inline text rather than a file."
+        },
+        {
+          "info": {
+            "name": "Create Document From URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/documents/from-url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Ingest a document by fetching it from a remote URL."
+        },
+        {
+          "info": {
+            "name": "Get Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/:document_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Document"
+        },
+        {
+          "info": {
+            "name": "Update Document File",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/documents/:document_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Replace a document's contents with a new uploaded file."
+        },
+        {
+          "info": {
+            "name": "Delete Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/documents/:document_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete Document"
+        },
+        {
+          "info": {
+            "name": "Patch Document Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ragie.ai/documents/:document_id/metadata",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch Document Metadata"
+        },
+        {
+          "info": {
+            "name": "Get Document Content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/:document_id/content",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the processed text content of the document."
+        },
+        {
+          "info": {
+            "name": "Get Document Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/:document_id/summary",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Document Summary"
+        },
+        {
+          "info": {
+            "name": "Get Document Source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/:document_id/source",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the original source file for the document."
+        },
+        {
+          "info": {
+            "name": "Get Document Chunks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/:document_id/chunks",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Document Chunks"
+        },
+        {
+          "info": {
+            "name": "Get Document Chunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/documents/:document_id/chunks/:chunk_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chunk_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Document Chunk"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

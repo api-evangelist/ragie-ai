@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ragie Connections Retrievals API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Retrievals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/retrievals",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run a semantic retrieval over indexed chunks and return the most relevant scored chunks for the query."
+        },
+        {
+          "info": {
+            "name": "Create Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/responses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate an agentic response grounded in content retrieved from the knowledge base."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ragie Connections Partitions API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Partitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Partitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/partitions",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Partitions"
+        },
+        {
+          "info": {
+            "name": "Create Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ragie.ai/partitions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Partition"
+        },
+        {
+          "info": {
+            "name": "Get Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ragie.ai/partitions/:partition_id",
+            "params": [
+              {
+                "name": "partition_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Partition"
+        },
+        {
+          "info": {
+            "name": "Update Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ragie.ai/partitions/:partition_id",
+            "params": [
+              {
+                "name": "partition_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Partition"
+        },
+        {
+          "info": {
+            "name": "Delete Partition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ragie.ai/partitions/:partition_id",
+            "params": [
+              {
+                "name": "partition_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete Partition"
+        },
+        {
+          "info": {
+            "name": "Set Partition Limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ragie.ai/partitions/:partition_id/limits",
+            "params": [
+              {
+                "name": "partition_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set Partition Limits"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
