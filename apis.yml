@@ -22,6 +22,12 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/ragie-ai.png
 tags:
+- Artificial Intelligence
+- RAG
+- Retrieval
+- Vector Search
+- Document Ingestion
+tags_raw:
 - AI
 - RAG
 - Retrieval
