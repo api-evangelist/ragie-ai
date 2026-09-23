@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Ragie Connections Entities API
+  title: Ragie Entities API
   description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.
   termsOfService: https://www.ragie.ai/terms-of-service
   contact:
@@ -138,19 +138,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    ValidationError:
-      description: Request validation failed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Entity:
       type: object
@@ -167,26 +154,6 @@ components:
         data:
           type: object
           additionalProperties: true
-    Instruction:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        prompt:
-          type: string
-        entity_schema:
-          type: object
-          additionalProperties: true
-        scope:
-          type: string
-        active:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
     InstructionCreate:
       type: object
       required:
@@ -220,6 +187,26 @@ components:
           type: string
         status_code:
           type: integer
+    Instruction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        prompt:
+          type: string
+        entity_schema:
+          type: object
+          additionalProperties: true
+        scope:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
   parameters:
     DocumentId:
       name: document_id
@@ -235,6 +222,19 @@ components:
       schema:
         type: string
         format: uuid
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

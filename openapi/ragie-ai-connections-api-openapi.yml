@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Ragie Connections API
   description: Ragie is a fully-managed Retrieval-Augmented Generation (RAG) as-a-service platform. This specification covers the documented REST surface for ingesting documents, retrieving chunks, generating grounded responses, managing data connectors, extracting entities, and isolating data with partitions. All requests are authenticated with a Bearer API key.
@@ -265,12 +265,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    ValidationError:
-      description: Request validation failed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
       content:
@@ -283,29 +277,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    ConnectionId:
-      name: connection_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ConnectionCreate:
-      type: object
-      required:
-      - source_type
-      properties:
-        source_type:
-          type: string
-        name:
-          type: string
-        partition:
-          type: string
-        metadata:
-          type: object
-          additionalProperties: true
     Connection:
       type: object
       properties:
@@ -323,6 +301,20 @@ components:
         created_at:
           type: string
           format: date-time
+    ConnectionCreate:
+      type: object
+      required:
+      - source_type
+      properties:
+        source_type:
+          type: string
+        name:
+          type: string
+        partition:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
     Error:
       type: object
       properties:
@@ -330,6 +322,14 @@ components:
           type: string
         status_code:
           type: integer
+  parameters:
+    ConnectionId:
+      name: connection_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     bearerAuth:
       type: http
