@@ -148,12 +148,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Resource not found.
       content:
@@ -166,7 +160,25 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    PartitionCreate:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Lowercase alphanumeric identifier with underscores or hyphens.
+        pages_processed_limit_monthly:
+          type: integer
+        pages_hosted_limit_monthly:
+          type: integer
     Partition:
       type: object
       properties:
@@ -187,18 +199,6 @@ components:
         detail:
           type: string
         status_code:
-          type: integer
-    PartitionCreate:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Lowercase alphanumeric identifier with underscores or hyphens.
-        pages_processed_limit_monthly:
-          type: integer
-        pages_hosted_limit_monthly:
           type: integer
   parameters:
     PartitionId:

@@ -138,6 +138,21 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    InstructionId:
+      name: instruction_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   schemas:
     Entity:
       type: object
@@ -154,6 +169,26 @@ components:
         data:
           type: object
           additionalProperties: true
+    Instruction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        prompt:
+          type: string
+        entity_schema:
+          type: object
+          additionalProperties: true
+        scope:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
     InstructionCreate:
       type: object
       required:
@@ -187,50 +222,15 @@ components:
           type: string
         status_code:
           type: integer
-    Instruction:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        prompt:
-          type: string
-        entity_schema:
-          type: object
-          additionalProperties: true
-        scope:
-          type: string
-        active:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
-  parameters:
-    DocumentId:
-      name: document_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    InstructionId:
-      name: instruction_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
+    ValidationError:
+      description: Request validation failed.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Request validation failed.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
