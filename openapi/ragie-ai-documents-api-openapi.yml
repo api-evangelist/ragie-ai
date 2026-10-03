@@ -405,6 +405,22 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    DocumentList:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        cursor:
+          type: string
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
     Document:
       type: object
       properties:
@@ -442,22 +458,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    DocumentList:
-      type: object
-      properties:
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Document'
-        cursor:
-          type: string
-    Error:
-      type: object
-      properties:
-        detail:
-          type: string
-        status_code:
-          type: integer
   parameters:
     DocumentId:
       name: document_id
@@ -467,12 +467,6 @@ components:
         type: string
         format: uuid
   responses:
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     PaymentRequired:
       description: Plan limit reached or payment required.
       content:
@@ -485,14 +479,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Request validation failed.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Request validation failed.
       content:
         application/json:
           schema:

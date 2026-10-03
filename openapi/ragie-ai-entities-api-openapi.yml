@@ -138,21 +138,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    DocumentId:
-      name: document_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    InstructionId:
-      name: instruction_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
     Entity:
       type: object
@@ -189,6 +174,13 @@ components:
         created_at:
           type: string
           format: date-time
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
     InstructionCreate:
       type: object
       required:
@@ -215,22 +207,30 @@ components:
           additionalProperties: true
         active:
           type: boolean
-    Error:
-      type: object
-      properties:
-        detail:
-          type: string
-        status_code:
-          type: integer
+  parameters:
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    InstructionId:
+      name: instruction_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   responses:
-    ValidationError:
-      description: Request validation failed.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    ValidationError:
+      description: Request validation failed.
       content:
         application/json:
           schema:

@@ -147,38 +147,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Request validation failed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    PartitionCreate:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Lowercase alphanumeric identifier with underscores or hyphens.
-        pages_processed_limit_monthly:
-          type: integer
-        pages_hosted_limit_monthly:
-          type: integer
     Partition:
       type: object
       properties:
@@ -193,6 +162,18 @@ components:
         created_at:
           type: string
           format: date-time
+    PartitionCreate:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Lowercase alphanumeric identifier with underscores or hyphens.
+        pages_processed_limit_monthly:
+          type: integer
+        pages_hosted_limit_monthly:
+          type: integer
     Error:
       type: object
       properties:
@@ -207,6 +188,25 @@ components:
       required: true
       schema:
         type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http
