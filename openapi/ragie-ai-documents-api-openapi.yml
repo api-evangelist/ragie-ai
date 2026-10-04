@@ -389,38 +389,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Chunk:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        document_id:
-          type: string
-          format: uuid
-        text:
-          type: string
-        index:
-          type: integer
-        metadata:
-          type: object
-          additionalProperties: true
-    DocumentList:
-      type: object
-      properties:
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Document'
-        cursor:
-          type: string
-    Error:
-      type: object
-      properties:
-        detail:
-          type: string
-        status_code:
-          type: integer
     Document:
       type: object
       properties:
@@ -458,35 +426,41 @@ components:
         updated_at:
           type: string
           format: date-time
-  parameters:
-    DocumentId:
-      name: document_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
+    Chunk:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        document_id:
+          type: string
+          format: uuid
+        text:
+          type: string
+        index:
+          type: integer
+        metadata:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
+    DocumentList:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        cursor:
+          type: string
   responses:
-    PaymentRequired:
-      description: Plan limit reached or payment required.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     RateLimited:
       description: Too many requests.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
       content:
         application/json:
           schema:
@@ -497,6 +471,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PaymentRequired:
+      description: Plan limit reached or payment required.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     bearerAuth:
       type: http

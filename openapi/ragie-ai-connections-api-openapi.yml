@@ -264,25 +264,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Request validation failed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     ConnectionCreate:
       type: object
@@ -298,6 +279,13 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
     Connection:
       type: object
       properties:
@@ -315,13 +303,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        detail:
-          type: string
-        status_code:
-          type: integer
   parameters:
     ConnectionId:
       name: connection_id
@@ -330,6 +311,25 @@ components:
       schema:
         type: string
         format: uuid
+  responses:
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http
