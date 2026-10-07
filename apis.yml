@@ -221,6 +221,8 @@ apis:
   - type: APIReference
     url: https://docs.ragie.ai/reference/createpartition
 common:
+- type: Pricing
+  url: https://www.ragie.ai/pricing
 - type: AgenticAccess
   url: agentic-access/ragie-ai-agentic-access.yml
 - type: VulnerabilityDisclosure
