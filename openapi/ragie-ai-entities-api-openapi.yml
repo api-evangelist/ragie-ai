@@ -138,49 +138,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    DocumentId:
-      name: document_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    InstructionId:
-      name: instruction_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
-    Error:
-      type: object
-      properties:
-        detail:
-          type: string
-        status_code:
-          type: integer
-    Instruction:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        prompt:
-          type: string
-        entity_schema:
-          type: object
-          additionalProperties: true
-        scope:
-          type: string
-        active:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
     InstructionCreate:
       type: object
       required:
@@ -207,6 +165,13 @@ components:
           additionalProperties: true
         active:
           type: boolean
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        status_code:
+          type: integer
     Entity:
       type: object
       properties:
@@ -222,6 +187,41 @@ components:
         data:
           type: object
           additionalProperties: true
+    Instruction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        prompt:
+          type: string
+        entity_schema:
+          type: object
+          additionalProperties: true
+        scope:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    InstructionId:
+      name: instruction_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   responses:
     ValidationError:
       description: Request validation failed.

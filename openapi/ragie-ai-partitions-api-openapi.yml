@@ -148,18 +148,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    PartitionCreate:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Lowercase alphanumeric identifier with underscores or hyphens.
-        pages_processed_limit_monthly:
-          type: integer
-        pages_hosted_limit_monthly:
-          type: integer
     Error:
       type: object
       properties:
@@ -181,15 +169,27 @@ components:
         created_at:
           type: string
           format: date-time
+    PartitionCreate:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Lowercase alphanumeric identifier with underscores or hyphens.
+        pages_processed_limit_monthly:
+          type: integer
+        pages_hosted_limit_monthly:
+          type: integer
   responses:
-    ValidationError:
-      description: Request validation failed.
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
+    ValidationError:
+      description: Request validation failed.
       content:
         application/json:
           schema:
